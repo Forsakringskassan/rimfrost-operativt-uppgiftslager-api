@@ -2,7 +2,7 @@ asyncapi: 3.0.0
 info:
   title: Operativt uppgiftslager API
   version: 1.0.0
-  description: Operativt uppgiftslager för hantering av manuella kontroller utförda av handläggare
+  description: Operativt uppgiftslager för hantering av manuella uppgifter utförda av handläggare
 
 channels:
   operativt.uppgiftslager.requests:
