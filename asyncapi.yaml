@@ -69,7 +69,7 @@ components:
             example: 19990101-0123
           resultat:
             type: boolean
-            description: Resultat av den manuella kontrollen, om personen har rätt till försäkring eller ej.
+            description: Resultat av registrering av ny uppgift i uppgiftslagret
             example: true
           status:
             type: string
