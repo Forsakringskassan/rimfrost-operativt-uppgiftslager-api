@@ -1,0 +1,83 @@
+asyncapi: 3.0.0
+info:
+  title: Operativt uppgiftslager API
+  version: 1.0.0
+  description: Operativt uppgiftslager för hantering av manuella kontroller utförda av handläggare
+
+channels:
+  operativt.uppgiftslager.requests:
+    messages:
+      OperativtUppgiftslagerRequestMessage:
+        $ref: '#/components/messages/OperativtUppgiftslagerRequestMessage'
+  operativt.uppgiftslager.responses:
+    messages:
+      OperativtUppgiftslagerResponseMessage:
+        $ref: '#/components/messages/OperativtUppgiftslagerResponseMessage'
+operations:
+  operativtUppgiftslagerRequest:
+    action: receive
+    channel:
+      $ref: '#/channels/operativt.uppgiftslager.requests'
+    reply:
+      address:
+        description: Topic där response ska skickas
+        location: "$message.header#/replyTo"
+      channel:
+        $ref: '#/channels/operativt.uppgiftslager.responses'
+components:
+  messages:
+    OperativtUppgiftslagerRequestMessage:
+      headers:
+        type: object
+        properties:
+          replyTo:
+            type: string
+            description: Topic där response ska skickas
+          correlationId:
+            type: string
+            description: Unikt id som kopplar ihop request & response
+      payload:
+        type: object
+        properties:
+          processId:
+            type: string
+            description: Unikt id som identifierar processinstansen
+          personNummer:
+            type: string
+            description: Svenskt personnummer 12 siffror
+            pattern: '^\d{10}-\d{4}$'
+            example: 19990101-0123
+      correlationId:
+        $ref: "#/components/correlationIds/correlationId"
+    OperativtUppgiftslagerResponseMessage:
+      headers:
+        type: object
+        properties:
+          correlationId:
+            type: string
+            description: Unikt id som kopplar ihop request & response
+      payload:
+        type: object
+        properties:
+          processId:
+            type: string
+            description: Unikt id som identifierar processinstansen
+          personNummer:
+            type: string
+            description: Svenskt personnummer 12 siffror
+            pattern: '^\d{10}-\d{4}$'
+            example: 19990101-0123
+          resultat:
+            type: boolean
+            description: Resultat av den manuella kontrollen, om personen har rätt till försäkring eller ej.
+            example: true
+          status:
+            type: string
+            description: Status för processen
+            enum:
+              - Ny
+              - Tilldelad
+              - Avslutad
+  correlationIds:
+    correlationId:
+      location: '$message.header#/requestId'
