@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: Operativt uppgiftslager API
+  version: 1.0.0
+  description: API för att hämta och färdigställa uppgifter
+
+paths:
+  /uppgifter/{operators_id}/next:
+    post:
+      tags: [UppgiftslagerController]
+      operationId: postUppgiftslagerNext
+      summary: Hämta ny uppgift
+      description: Hämta ny uppgift som tilldelas operatören
+      parameters:
+        - name: operators_id
+          in: path
+          required: true
+          description: Operatörens id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ny uppgift hämtad OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uppgiftsId:
+                    type: string
+                    description: Unikt id för hämtad uppgift
+                  uppgiftsBeskrivning:
+                    type: string
+                    description: Arbetsbeskrivning för uppgiften
+                  personnummer:
+                    $ref: '#/components/schemas/Personnummer'
+              examples:
+                tilldeladUppgift:
+                  summary: Lyckad tilldelning av uppgift
+                  value:
+                    uppgiftsId: "123456"
+                    uppgiftsBeskrivning: "Kolla om personen har anställning"
+                    personnummer: "19990101-0123"
+        '400':
+          description: Bad request (t.ex. felaktigt operatörsid)
+components:
+  schemas:
+    Personnummer:
+      type: string
+      description: Svenskt personnummer (12 siffror med bindestreck)
+      pattern: '^\d{8}-\d{4}$'
+      example: "19990101-0123"
