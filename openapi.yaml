@@ -2,20 +2,20 @@ openapi: 3.0.3
 info:
   title: Operativt uppgiftslager API
   version: 1.0.0
-  description: API för att hämta och färdigställa uppgifter
+  description: API för att hämta uppgifter som tilldelas handläggaren och uppdatera status på tilldelade uppgifter
 
 paths:
-  /uppgifter/{operators_id}/next:
+  /uppgifter/{handlaggar_id}/next:
     post:
       tags: [UppgiftslagerController]
       operationId: postUppgiftslagerNext
       summary: Hämta ny uppgift
-      description: Hämta ny uppgift som tilldelas operatören
+      description: Hämta ny uppgift som tilldelas handläggaren
       parameters:
-        - name: operators_id
+        - name: handlaggar_id
           in: path
           required: true
-          description: Operatörens id
+          description: Handläggarens id
           schema:
             type: string
       responses:
@@ -24,25 +24,35 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  uppgiftsId:
-                    type: string
-                    description: Unikt id för hämtad uppgift
-                  uppgiftsBeskrivning:
-                    type: string
-                    description: Arbetsbeskrivning för uppgiften
-                  personnummer:
-                    $ref: '#/components/schemas/Personnummer'
-              examples:
-                tilldeladUppgift:
-                  summary: Lyckad tilldelning av uppgift
-                  value:
-                    uppgiftsId: "123456"
-                    uppgiftsBeskrivning: "Kolla om personen har anställning"
-                    personnummer: "19990101-0123"
+                $ref: '#/components/schemas/UppgiftNextResponse'
         '400':
-          description: Bad request (t.ex. felaktigt operatörsid)
+          description: Bad request (t.ex. felaktigt handlaggar_id)
+  /uppgifter/{uppgift_id}:
+    patch:
+      tags: [UppgiftslagerController]
+      operationId: patchUppgiftStatus
+      summary: Uppdatera status för uppgift
+      description: Uppdatera status för uppgift
+      parameters:
+        - name: uppgift_id
+          in: path
+          required: true
+          description: Uppgiftens id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UppgiftStatusUpdateRequest'
+      responses:
+        '200':
+          description: Uppgift uppdaterad OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UppgiftStatusUpdateResponse'
 components:
   schemas:
     Personnummer:
@@ -50,3 +60,47 @@ components:
       description: Svenskt personnummer (12 siffror med bindestreck)
       pattern: '^\d{8}-\d{4}$'
       example: "19990101-0123"
+    UppgiftNextResponse:
+      type: object
+      properties:
+        uppgift_id:
+          type: string
+          description: Unikt id för hämtad uppgift
+        uppgift_beskrivning:
+          type: string
+          description: Arbetsbeskrivning för uppgiften
+        personnummer:
+          $ref: '#/components/schemas/Personnummer'
+    UppgiftStatusUpdateRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          description: Beskrivning av ny status
+          example: "Utförd"
+    UppgiftStatusUpdateResponse:
+      type: object
+      properties:
+        uppgift:
+          $ref: '#/components/schemas/Uppgift'
+    Uppgift:
+      type: object
+      required:
+        - uppgift_id
+        - handlaggar_id
+        - status
+      properties:
+        uppgift_id:
+          type: string
+          example: "abc123"
+        handlaggar_id:
+          type: string
+          example: "42"
+        beskrivning:
+          type: string
+          example: "Fråga om personen har anställning"
+        status:
+          type: string
+          example: "Tilldelad"
