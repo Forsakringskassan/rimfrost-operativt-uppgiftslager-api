@@ -5,10 +5,21 @@ info:
   description: API för att hämta uppgifter som tilldelas handläggaren och uppdatera status på tilldelade uppgifter
 
 paths:
-  /uppgifter/{handlaggar_id}/next:
+  /uppgifter:
+    get:
+      tags: [UppgiftslagerController]
+      operationId: getUppgifter
+      responses:
+        '200':
+          description: Uppgifter hämtade OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUppgifterResponse'
+  /uppgifter/handlaggare/{handlaggar_id}:
     post:
       tags: [UppgiftslagerController]
-      operationId: postUppgiftslagerNext
+      operationId: postUppgifterHandlaggare
       summary: Hämta ny uppgift
       description: Hämta ny uppgift som tilldelas handläggaren
       parameters:
@@ -24,13 +35,55 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UppgiftNextResponse'
+                $ref: '#/components/schemas/PostUppgifterHandlaggareResponse'
+        '400':
+          description: Bad request (t.ex. felaktigt handlaggar_id)
+    get:
+      tags: [UppgiftslagerController]
+      operationId: getUppgifterHandlaggare
+      summary: Hämta uppgifter som tilldelats handläggare
+      description: Hämta uppgifter som tilldelats handläggare
+      parameters:
+        - name: handlaggar_id
+          in: path
+          required: true
+          description: Handläggarens id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Uppgifter hämtade OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUppgifterHandlaggareResponse'
         '400':
           description: Bad request (t.ex. felaktigt handlaggar_id)
   /uppgifter/{uppgift_id}:
+    get:
+      tags: [UppgiftslagerController]
+      operationId: getUppgift
+      summary: Hämta information om uppgift
+      description: Hämta information om uppgift
+      parameters:
+        - name: uppgift_id
+          in: path
+          required: true
+          description: Uppgiftens id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Uppgiftsinformation hämtad OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUppgiftResponse'
+        '400':
+          description: Bad request (t.ex. felaktigt uppgift_id)
     patch:
       tags: [UppgiftslagerController]
-      operationId: patchUppgiftStatus
+      operationId: patchUppgift
       summary: Uppdatera status för uppgift
       description: Uppdatera status för uppgift
       parameters:
@@ -45,14 +98,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UppgiftStatusUpdateRequest'
+              $ref: '#/components/schemas/PatchUppgiftRequest'
       responses:
         '200':
           description: Uppgift uppdaterad OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UppgiftStatusUpdateResponse'
+                $ref: '#/components/schemas/PatchUppgiftResponse'
 components:
   schemas:
     Personnummer:
@@ -60,7 +113,7 @@ components:
       description: Svenskt personnummer (12 siffror med bindestreck)
       pattern: '^\d{8}-\d{4}$'
       example: "19990101-0123"
-    UppgiftNextResponse:
+    PostUppgifterHandlaggareResponse:
       type: object
       properties:
         uppgift_id:
@@ -71,7 +124,7 @@ components:
           description: Arbetsbeskrivning för uppgiften
         personnummer:
           $ref: '#/components/schemas/Personnummer'
-    UppgiftStatusUpdateRequest:
+    PatchUppgiftRequest:
       type: object
       required:
         - status
@@ -80,11 +133,26 @@ components:
           type: string
           description: Beskrivning av ny status
           example: "Utförd"
-    UppgiftStatusUpdateResponse:
+    PatchUppgiftResponse:
       type: object
       properties:
         uppgift:
           $ref: '#/components/schemas/Uppgift'
+    GetUppgiftResponse:
+      type: object
+      properties:
+        uppgift:
+          $ref: '#/components/schemas/Uppgift'
+    GetUppgifterResponse:
+      type: object
+      properties:
+        uppgifter:
+          $ref: '#/components/schemas/Uppgifter'
+    GetUppgifterHandlaggareResponse:
+      type: object
+      properties:
+        uppgifter:
+          $ref: '#/components/schemas/Uppgifter'
     Uppgift:
       type: object
       required:
@@ -104,3 +172,12 @@ components:
         status:
           type: string
           example: "Tilldelad"
+    Uppgifter:
+      type: array
+      items:
+        $ref: '#/components/schemas/Uppgift'
+      example:
+        - uppgift_id: "abc123"
+          handlaggar_id: "42"
+          beskrivning: "Fråga om personen har anställning"
+          status: "Tilldelad"
