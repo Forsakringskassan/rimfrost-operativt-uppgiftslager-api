@@ -138,11 +138,11 @@ components:
         roll:
           type: string
           description: Ingen aning
-        applikations_id:
+        applikationsId:
           type: string
-        applikations_version:
+        applikationsVersion:
           type: string
-        gui_link:
+        guiLink:
           type: string
           format: url
           description: Länk till uppgiftens GUI
@@ -191,16 +191,16 @@ components:
         version:
           type: string
           description: Lagrummets version
-        giltighet_start:
+        giltighetStart:
           type: string
           description: DateTime av giltighetstid, från och med, enligt ISO 8601
-        giltighet_slut:
+        giltighetSlut:
           type: string
           description: DateTime av sluttiden för giltighet, enligt ISO 8601
         forfattning:
           type: string
           description: Avser vilken författning Lagrummet är av
-        kap:
+        kapitel:
           type: integer
           description: Avser vilket kapitel av författningen Lagrummet är av
         paragraf:
@@ -232,11 +232,11 @@ components:
           type: integer
           description: Uppgiftens nya prioritering
           example: 1
-        utforar_id:
+        utforarId:
           type: string
           description: GUIDn av nya handläggaren? utföraren? för uppgiften
           example: "8cd549c7-10d1-4a4f-9eee-11fbfd30e358"
-        planerad_till:
+        planeradTill:
           type: string
           description: DateTime av tidpunkten som uppgiften är planerad att vara gjord med ISO 8601 format
           example: "2025-11-07T09:35:41+00:00"
@@ -331,7 +331,7 @@ components:
       items:
         $ref: '#/components/schemas/Uppgift'
       example:
-        - uppgift_id: "abc123"
-          handlaggar_id: "42"
+        - uppgiftId: "abc123"
+          handlaggarId: "42"
           beskrivning: "Fråga om personen har anställning"
           status: "Tilldelad"
