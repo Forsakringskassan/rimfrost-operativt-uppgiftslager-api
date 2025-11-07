@@ -1,3 +1,9 @@
+## 0.1.2 (2025-11-07)
+
+### Bug Fixes
+
+-  tag OperativtUppgiftslagerController ([3ef23](https://github.com/Forsakringskassan/rimfrost-operativt-uppgiftslager-api/commit/3ef233a8c4285b8) Ulf Slunga)  
+
 ## 0.1.1 (2025-11-06)
 
 ### Bug Fixes
