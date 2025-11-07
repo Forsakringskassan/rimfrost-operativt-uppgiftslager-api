@@ -16,14 +16,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUppgifterResponse'
-  /uppgifter/handlaggare/{handlaggar_id}:
+  /uppgifter/handlaggare/{handlaggarId}:
     post:
       tags: [OperativtUppgiftslagerController]
       operationId: postUppgifterHandlaggare
       summary: Hämta ny uppgift
       description: Hämta ny uppgift som tilldelas handläggaren
       parameters:
-        - name: handlaggar_id
+        - name: handlaggarId
           in: path
           required: true
           description: Handläggarens id
@@ -37,14 +37,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostUppgifterHandlaggareResponse'
         '400':
-          description: Bad request (t.ex. felaktigt handlaggar_id)
+          description: Bad request (t.ex. felaktigt handlaggarId)
     get:
       tags: [OperativtUppgiftslagerController]
       operationId: getUppgifterHandlaggare
       summary: Hämta uppgifter som tilldelats handläggare
       description: Hämta uppgifter som tilldelats handläggare
       parameters:
-        - name: handlaggar_id
+        - name: handlaggarId
           in: path
           required: true
           description: Handläggarens id
@@ -58,15 +58,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetUppgifterHandlaggareResponse'
         '400':
-          description: Bad request (t.ex. felaktigt handlaggar_id)
-  /uppgifter/{uppgift_id}:
+          description: Bad request (t.ex. felaktigt handlaggarId)
+  /uppgifter/{uppgiftId}:
     get:
       tags: [OperativtUppgiftslagerController]
       operationId: getUppgift
       summary: Hämta information om uppgift
       description: Hämta information om uppgift
       parameters:
-        - name: uppgift_id
+        - name: uppgiftId
           in: path
           required: true
           description: Uppgiftens id
@@ -80,14 +80,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetUppgiftResponse'
         '400':
-          description: Bad request (t.ex. felaktigt uppgift_id)
+          description: Bad request (t.ex. felaktigt uppgiftId)
     patch:
       tags: [OperativtUppgiftslagerController]
       operationId: patchUppgift
-      summary: Uppdatera status för uppgift
-      description: Uppdatera status för uppgift
+      summary: Uppdatera t.ex. status eller prioritering av uppgift
+      description: Uppdatera t.ex. status eller prioritering av uppgift
       parameters:
-        - name: uppgift_id
+        - name: uppgiftId
           in: path
           required: true
           description: Uppgiftens id
@@ -106,6 +106,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PatchUppgiftResponse'
+
 components:
   schemas:
     Personnummer:
@@ -113,65 +114,218 @@ components:
       description: Svenskt personnummer (12 siffror med bindestreck)
       pattern: '^\d{8}-\d{4}$'
       example: "19990101-0123"
-    PostUppgifterHandlaggareResponse:
+
+    Uppgiftsspecifikation:
+      type: object
+      description: Uppgiftsspecifikation
+      required:
+        - id
+        - version
+        - name
+      properties:
+        id:
+          type: string
+          description: Uppgiftsspecifikationens ID
+        version:
+          type: string
+          description: Uppgiftsspecifikationens version
+        uppgiftsbeskrivning:
+          type: string
+          description: Beskrivning av uppgiften i mer detalj
+        verksamhetslogik:
+          type: string
+          description: Beteckning för verksamhetslogiken i uppgiften
+        roll:
+          type: string
+          description: Ingen aning
+        applikations_id:
+          type: string
+        applikations_version:
+          type: string
+        gui_link:
+          type: string
+          format: url
+          description: Länk till uppgiftens GUI
+        name:
+          type: string
+          description: Namnet på uppgiftsspecifikationen
+
+    Underlag:
       type: object
       properties:
-        uppgift_id:
+        id:
           type: string
-          description: Unikt id för hämtad uppgift
-        uppgift_beskrivning:
+          description: Unikt id för Underlaget
+      additionalProperties: true
+      description: Underlag i valfritt format. Backend äger strukturen
+
+    Regel:
+      type: object
+      properties:
+        id:
           type: string
-          description: Arbetsbeskrivning för uppgiften
-        personnummer:
-          $ref: '#/components/schemas/Personnummer'
+          description: Unik ID för regeln
+        version:
+          type: string
+          description: Version av regeln
+        namn:
+          type: string
+          description: Regelns namn
+        beskrivning:
+          type: string
+          description: En beskrivning av regeln och vad den innebär
+        lagrum:
+          type: array
+          description: En eller flera Lagrum som Regeln hänvisar till
+          items:
+            $ref: '#/components/schemas/Lagrum'
+          minItems: 1
+      additionalProperties: true
+
+    Lagrum:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Lagrummets unika ID
+        version:
+          type: string
+          description: Lagrummets version
+        giltighet_start:
+          type: string
+          description: DateTime av giltighetstid, från och med, enligt ISO 8601
+        giltighet_slut:
+          type: string
+          description: DateTime av sluttiden för giltighet, enligt ISO 8601
+        forfattning:
+          type: string
+          description: Avser vilken författning Lagrummet är av
+        kap:
+          type: integer
+          description: Avser vilket kapitel av författningen Lagrummet är av
+        paragraf:
+          type: integer
+          description: Avser vilket paragraf i kapitlet Lagrummet är av
+        stycke:
+          type: integer
+          description: Avser vilket stycke i paragrafen Lagrummet är av
+        punkt:
+          type: integer
+          description: Avser vilken punkt i stycket Lagrummet är av
+
+
     PatchUppgiftRequest:
       type: object
-      required:
-        - status
+      anyOf:
+        - required: [status]
+        - required: [priority]
+        - required: [utforarId]
+        - required: [planeradTill]
+        - required: [utford]
+        - required: [fssa]
       properties:
         status:
           type: string
           description: Beskrivning av ny status
           example: "Utförd"
+        priority:
+          type: integer
+          description: Uppgiftens nya prioritering
+          example: 1
+        utforar_id:
+          type: string
+          description: GUIDn av nya handläggaren? utföraren? för uppgiften
+          example: "8cd549c7-10d1-4a4f-9eee-11fbfd30e358"
+        planerad_till:
+          type: string
+          description: DateTime av tidpunkten som uppgiften är planerad att vara gjord med ISO 8601 format
+          example: "2025-11-07T09:35:41+00:00"
+        utford:
+          type: string
+          description: DateTime av tidpunkten som uppgiften blev färdig i ISO 8601 format
+          example: "2025-11-10T16:11:57+00:00"
+        aktivitet:
+          type: string
+          description: Förklaring av uppgiften i större detalj
+          example: "Bedöma rätten om Lisa Tass har rätt till VAH under datumen ---"
+        fssa:
+          type: string
+          description: FSSÄ-information till kund
+          example: "Handläggning pågår"
+
+    PostUppgifterHandlaggareResponse:
+      type: object
+      properties:
+        uppgift:
+          $ref: '#/components/schemas/Uppgift'
+
+
     PatchUppgiftResponse:
       type: object
       properties:
         uppgift:
           $ref: '#/components/schemas/Uppgift'
+
     GetUppgiftResponse:
       type: object
       properties:
         uppgift:
           $ref: '#/components/schemas/Uppgift'
+
     GetUppgifterResponse:
       type: object
       properties:
         uppgifter:
           $ref: '#/components/schemas/Uppgifter'
+
     GetUppgifterHandlaggareResponse:
       type: object
       properties:
         uppgifter:
           $ref: '#/components/schemas/Uppgifter'
+
     Uppgift:
       type: object
       required:
-        - uppgift_id
-        - handlaggar_id
+        - uppgiftId
         - status
+        - skapad
+        - spec
+        - personnummer
       properties:
-        uppgift_id:
+        uppgiftId:
           type: string
-          example: "abc123"
-        handlaggar_id:
+          description: Unikt id för hämtad uppgift
+        version:
           type: string
-          example: "42"
-        beskrivning:
+          description: Uppgiftens version
+        skapad:
           type: string
-          example: "Fråga om personen har anställning"
+          description: DateTime av när uppgiften skapades i ISO 8601 format
+        utforarId:
+          type: string
+          description: Unikt ID för utföraren? handläggaren?
+        planeradTill:
+          type: string
+          description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
+        utford:
+          type: string
+          description: DateTime av tidpunkten som uppgiften blev färdig i ISO 8601 format
         status:
           type: string
-          example: "Tilldelad"
+          description: Uppgiftens status
+        aktivitet:
+          type: string
+          description: Arbetsbeskrivning för uppgiften
+        spec:
+          $ref: '#/components/schemas/Uppgiftsspecifikation'
+        personnummer:
+          $ref: '#/components/schemas/Personnummer'
+        underlag:
+          type: array
+          items:
+            $ref: '#/components/schemas/Underlag'
+
     Uppgifter:
       type: array
       items:
