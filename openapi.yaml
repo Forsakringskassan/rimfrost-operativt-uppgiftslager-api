@@ -7,7 +7,7 @@ info:
 paths:
   /uppgifter:
     get:
-      tags: [UppgiftslagerController]
+      tags: [OperativtUppgiftslagerController]
       operationId: getUppgifter
       responses:
         '200':
@@ -18,7 +18,7 @@ paths:
                 $ref: '#/components/schemas/GetUppgifterResponse'
   /uppgifter/handlaggare/{handlaggar_id}:
     post:
-      tags: [UppgiftslagerController]
+      tags: [OperativtUppgiftslagerController]
       operationId: postUppgifterHandlaggare
       summary: Hämta ny uppgift
       description: Hämta ny uppgift som tilldelas handläggaren
@@ -39,7 +39,7 @@ paths:
         '400':
           description: Bad request (t.ex. felaktigt handlaggar_id)
     get:
-      tags: [UppgiftslagerController]
+      tags: [OperativtUppgiftslagerController]
       operationId: getUppgifterHandlaggare
       summary: Hämta uppgifter som tilldelats handläggare
       description: Hämta uppgifter som tilldelats handläggare
@@ -61,7 +61,7 @@ paths:
           description: Bad request (t.ex. felaktigt handlaggar_id)
   /uppgifter/{uppgift_id}:
     get:
-      tags: [UppgiftslagerController]
+      tags: [OperativtUppgiftslagerController]
       operationId: getUppgift
       summary: Hämta information om uppgift
       description: Hämta information om uppgift
@@ -82,7 +82,7 @@ paths:
         '400':
           description: Bad request (t.ex. felaktigt uppgift_id)
     patch:
-      tags: [UppgiftslagerController]
+      tags: [OperativtUppgiftslagerController]
       operationId: patchUppgift
       summary: Uppdatera status för uppgift
       description: Uppdatera status för uppgift
