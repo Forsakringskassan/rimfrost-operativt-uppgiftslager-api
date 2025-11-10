@@ -183,7 +183,7 @@ components:
           description: En beskrivning av regeln och vad den innebär
         lagrum:
           type: array
-          description: En eller flera Lagrum som Regeln hänvisar till
+          description: Ett eller flera Lagrum som Regeln hänvisar till
           items:
             $ref: '#/components/schemas/Lagrum'
           minItems: 1
@@ -246,11 +246,11 @@ components:
           example: 1
         utforar_id:
           type: string
-          description: GUIDn av nya handläggaren? utföraren? för uppgiften
+          description: GUIDn av nya utföraren för uppgiften
           example: "8cd549c7-10d1-4a4f-9eee-11fbfd30e358"
         planerad_till:
           type: string
-          description: DateTime av tidpunkten som uppgiften är planerad att vara gjord med ISO 8601 format
+          description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
           example: "2025-11-07T09:35:41+00:00"
         utford:
           type: string
@@ -316,7 +316,7 @@ components:
           description: DateTime av när uppgiften skapades i ISO 8601 format
         utforar_id:
           type: string
-          description: Unikt ID för utföraren? handläggaren?
+          description: Unikt ID för utföraren
         planerad_till:
           type: string
           description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
