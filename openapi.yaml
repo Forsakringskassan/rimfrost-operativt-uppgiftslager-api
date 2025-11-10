@@ -16,14 +16,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUppgifterResponse'
-  /uppgifter/handlaggare/{handlaggarId}:
+  /uppgifter/handlaggare/{handlaggar_id}:
     post:
       tags: [OperativtUppgiftslagerController]
       operationId: postUppgifterHandlaggare
       summary: Hämta ny uppgift
       description: Hämta ny uppgift som tilldelas handläggaren
       parameters:
-        - name: handlaggarId
+        - name: handlaggar_id
           in: path
           required: true
           description: Handläggarens id
@@ -37,14 +37,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostUppgifterHandlaggareResponse'
         '400':
-          description: Bad request (t.ex. felaktigt handlaggarId)
+          description: Bad request (t.ex. felaktigt handlaggar_id)
     get:
       tags: [OperativtUppgiftslagerController]
       operationId: getUppgifterHandlaggare
       summary: Hämta uppgifter som tilldelats handläggare
       description: Hämta uppgifter som tilldelats handläggare
       parameters:
-        - name: handlaggarId
+        - name: handlaggar_id
           in: path
           required: true
           description: Handläggarens id
@@ -58,15 +58,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetUppgifterHandlaggareResponse'
         '400':
-          description: Bad request (t.ex. felaktigt handlaggarId)
-  /uppgifter/{uppgiftId}:
+          description: Bad request (t.ex. felaktigt handlaggar_id)
+  /uppgifter/{uppgift_id}:
     get:
       tags: [OperativtUppgiftslagerController]
       operationId: getUppgift
       summary: Hämta information om uppgift
       description: Hämta information om uppgift
       parameters:
-        - name: uppgiftId
+        - name: uppgift_id
           in: path
           required: true
           description: Uppgiftens id
@@ -80,14 +80,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetUppgiftResponse'
         '400':
-          description: Bad request (t.ex. felaktigt uppgiftId)
+          description: Bad request (t.ex. felaktigt uppgift_id)
     patch:
       tags: [OperativtUppgiftslagerController]
       operationId: patchUppgift
       summary: Uppdatera t.ex. status eller prioritering av uppgift
       description: Uppdatera t.ex. status eller prioritering av uppgift
       parameters:
-        - name: uppgiftId
+        - name: uppgift_id
           in: path
           required: true
           description: Uppgiftens id
@@ -138,11 +138,11 @@ components:
         roll:
           type: string
           description: Ingen aning
-        applikationsId:
+        applikations_id:
           type: string
-        applikationsVersion:
+        applikations_version:
           type: string
-        guiLink:
+        gui_link:
           type: string
           format: url
           description: Länk till uppgiftens GUI
@@ -152,6 +152,8 @@ components:
 
     Underlag:
       type: object
+      required:
+        - id
       properties:
         id:
           type: string
@@ -161,6 +163,11 @@ components:
 
     Regel:
       type: object
+      required:
+        - id
+        - version
+        - namn
+        - lagrum
       properties:
         id:
           type: string
@@ -184,6 +191,11 @@ components:
 
     Lagrum:
       type: object
+      required:
+        - id
+        - version
+        - giltighet_start
+        - forfattning
       properties:
         id:
           type: string
@@ -191,10 +203,10 @@ components:
         version:
           type: string
           description: Lagrummets version
-        giltighetStart:
+        giltighet_start:
           type: string
           description: DateTime av giltighetstid, från och med, enligt ISO 8601
-        giltighetSlut:
+        giltighet_slut:
           type: string
           description: DateTime av sluttiden för giltighet, enligt ISO 8601
         forfattning:
@@ -219,8 +231,8 @@ components:
       anyOf:
         - required: [status]
         - required: [priority]
-        - required: [utforarId]
-        - required: [planeradTill]
+        - required: [utforar_id]
+        - required: [planerad_till]
         - required: [utford]
         - required: [fssa]
       properties:
@@ -232,11 +244,11 @@ components:
           type: integer
           description: Uppgiftens nya prioritering
           example: 1
-        utforarId:
+        utforar_id:
           type: string
           description: GUIDn av nya handläggaren? utföraren? för uppgiften
           example: "8cd549c7-10d1-4a4f-9eee-11fbfd30e358"
-        planeradTill:
+        planerad_till:
           type: string
           description: DateTime av tidpunkten som uppgiften är planerad att vara gjord med ISO 8601 format
           example: "2025-11-07T09:35:41+00:00"
@@ -287,13 +299,13 @@ components:
     Uppgift:
       type: object
       required:
-        - uppgiftId
+        - uppgift_id
         - status
         - skapad
         - spec
         - personnummer
       properties:
-        uppgiftId:
+        uppgift_id:
           type: string
           description: Unikt id för hämtad uppgift
         version:
@@ -302,10 +314,10 @@ components:
         skapad:
           type: string
           description: DateTime av när uppgiften skapades i ISO 8601 format
-        utforarId:
+        utforar_id:
           type: string
           description: Unikt ID för utföraren? handläggaren?
-        planeradTill:
+        planerad_till:
           type: string
           description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
         utford:
@@ -331,7 +343,7 @@ components:
       items:
         $ref: '#/components/schemas/Uppgift'
       example:
-        - uppgiftId: "abc123"
-          handlaggarId: "42"
+        - uppgift_id: "abc123"
+          handlaggar_id: "42"
           beskrivning: "Fråga om personen har anställning"
           status: "Tilldelad"
