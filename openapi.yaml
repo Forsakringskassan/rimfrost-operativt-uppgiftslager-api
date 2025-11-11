@@ -307,10 +307,13 @@ components:
       properties:
         uppgift_id:
           type: string
-          description: Unikt id för hämtad uppgift
+          description: Unikt ID som identifierar instansen av uppgifts-objektet
         version:
           type: string
           description: Uppgiftens version
+        uppgiftspec_id:
+          type: string
+          description: Unikt ID som identifierar uppgiftens specifikation
         skapad:
           type: string
           description: DateTime av när uppgiften skapades i ISO 8601 format
@@ -329,6 +332,9 @@ components:
         aktivitet:
           type: string
           description: Arbetsbeskrivning för uppgiften
+        frontend_gui_url:
+          type: string
+          description: URL för grafiska användargränssnittet som frontend behöver för att visa uppgiften korrekt
         spec:
           $ref: '#/components/schemas/Uppgiftsspecifikation'
         personnummer:
