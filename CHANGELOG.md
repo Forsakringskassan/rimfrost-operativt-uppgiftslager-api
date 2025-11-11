@@ -1,3 +1,12 @@
+## 0.1.3 (2025-11-11)
+
+### Bug Fixes
+
+-  **deps**  update jackson monorepo to v2.20.1 ([f65c7](https://github.com/Forsakringskassan/rimfrost-operativt-uppgiftslager-api/commit/f65c72a95d0bf0e) renovate[bot])  
+
+### Other changes
+
+
 ## 0.1.2 (2025-11-07)
 
 ### Bug Fixes
