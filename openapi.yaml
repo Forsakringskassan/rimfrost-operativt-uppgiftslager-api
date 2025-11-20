@@ -77,9 +77,6 @@ components:
         kundbehovsflode_id:
           type: string
           description: Unikt ID som identifierar kundflödet
-        version:
-          type: string
-          description: Regelns version
         skapad:
           type: string
           description: DateTime av när uppgiften skapades i ISO 8601 format
