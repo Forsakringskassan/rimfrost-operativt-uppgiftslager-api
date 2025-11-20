@@ -25,13 +25,13 @@ allprojects {
 	}
 }
 
-project("rimfrost-operativt-uppgiftslager-api-spec",{
+project("rimfrost-service-oul-openapi-spec",{
 	fkOpenApi {
 		generatorName.set("openapi-yaml")
 	}
 })
 
-project("rimfrost-operativt-uppgiftslager-api-jaxrs-spec",{
+project("rimfrost-service-oul-openapi-jaxrs-spec",{
 	fkOpenApi {
 		generatorName.set("jaxrs-spec")
 	}
