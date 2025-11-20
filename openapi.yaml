@@ -2,20 +2,9 @@ openapi: 3.0.3
 info:
   title: Operativt uppgiftslager API
   version: 1.0.0
-  description: API för att hämta uppgifter som tilldelas handläggaren och uppdatera status på tilldelade uppgifter
+  description: API för handläggare att hämta ny uppgift och lista sina tilldelade uppgifter.
 
 paths:
-  /uppgifter:
-    get:
-      tags: [OperativtUppgiftslagerController]
-      operationId: getUppgifter
-      responses:
-        '200':
-          description: Uppgifter hämtade OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetUppgifterResponse'
   /uppgifter/handlaggare/{handlaggar_id}:
     post:
       tags: [OperativtUppgiftslagerController]
@@ -59,236 +48,14 @@ paths:
                 $ref: '#/components/schemas/GetUppgifterHandlaggareResponse'
         '400':
           description: Bad request (t.ex. felaktigt handlaggar_id)
-  /uppgifter/{uppgift_id}:
-    get:
-      tags: [OperativtUppgiftslagerController]
-      operationId: getUppgift
-      summary: Hämta information om uppgift
-      description: Hämta information om uppgift
-      parameters:
-        - name: uppgift_id
-          in: path
-          required: true
-          description: Uppgiftens id
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Uppgiftsinformation hämtad OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetUppgiftResponse'
-        '400':
-          description: Bad request (t.ex. felaktigt uppgift_id)
-    patch:
-      tags: [OperativtUppgiftslagerController]
-      operationId: patchUppgift
-      summary: Uppdatera t.ex. status eller prioritering av uppgift
-      description: Uppdatera t.ex. status eller prioritering av uppgift
-      parameters:
-        - name: uppgift_id
-          in: path
-          required: true
-          description: Uppgiftens id
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchUppgiftRequest'
-      responses:
-        '200':
-          description: Uppgift uppdaterad OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PatchUppgiftResponse'
-
+  
 components:
   schemas:
-    Personnummer:
-      type: string
-      description: Svenskt personnummer (12 siffror med bindestreck)
-      pattern: '^\d{8}-\d{4}$'
-      example: "19990101-0123"
-
-    Uppgiftsspecifikation:
-      type: object
-      description: Uppgiftsspecifikation
-      required:
-        - id
-        - version
-        - name
-      properties:
-        id:
-          type: string
-          description: Uppgiftsspecifikationens ID
-        version:
-          type: string
-          description: Uppgiftsspecifikationens version
-        uppgiftsbeskrivning:
-          type: string
-          description: Beskrivning av uppgiften i mer detalj
-        verksamhetslogik:
-          type: string
-          description: Beteckning för verksamhetslogiken i uppgiften
-        roll:
-          type: string
-          description: Ingen aning
-        applikations_id:
-          type: string
-        applikations_version:
-          type: string
-        gui_link:
-          type: string
-          format: url
-          description: Länk till uppgiftens GUI
-        name:
-          type: string
-          description: Namnet på uppgiftsspecifikationen
-
-    Underlag:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          description: Unikt id för Underlaget
-      additionalProperties: true
-      description: Underlag i valfritt format. Backend äger strukturen
-
-    Regel:
-      type: object
-      required:
-        - id
-        - version
-        - namn
-        - lagrum
-      properties:
-        id:
-          type: string
-          description: Unik ID för regeln
-        version:
-          type: string
-          description: Version av regeln
-        namn:
-          type: string
-          description: Regelns namn
-        beskrivning:
-          type: string
-          description: En beskrivning av regeln och vad den innebär
-        lagrum:
-          type: array
-          description: Ett eller flera Lagrum som Regeln hänvisar till
-          items:
-            $ref: '#/components/schemas/Lagrum'
-          minItems: 1
-      additionalProperties: true
-
-    Lagrum:
-      type: object
-      required:
-        - id
-        - version
-        - giltighet_start
-        - forfattning
-      properties:
-        id:
-          type: string
-          description: Lagrummets unika ID
-        version:
-          type: string
-          description: Lagrummets version
-        giltighet_start:
-          type: string
-          description: DateTime av giltighetstid, från och med, enligt ISO 8601
-        giltighet_slut:
-          type: string
-          description: DateTime av sluttiden för giltighet, enligt ISO 8601
-        forfattning:
-          type: string
-          description: Avser vilken författning Lagrummet är av
-        kapitel:
-          type: integer
-          description: Avser vilket kapitel av författningen Lagrummet är av
-        paragraf:
-          type: integer
-          description: Avser vilket paragraf i kapitlet Lagrummet är av
-        stycke:
-          type: integer
-          description: Avser vilket stycke i paragrafen Lagrummet är av
-        punkt:
-          type: integer
-          description: Avser vilken punkt i stycket Lagrummet är av
-
-
-    PatchUppgiftRequest:
-      type: object
-      anyOf:
-        - required: [status]
-        - required: [priority]
-        - required: [utforar_id]
-        - required: [planerad_till]
-        - required: [utford]
-        - required: [fssa]
-      properties:
-        status:
-          type: string
-          description: Beskrivning av ny status
-          example: "Utförd"
-        priority:
-          type: integer
-          description: Uppgiftens nya prioritering
-          example: 1
-        utforar_id:
-          type: string
-          description: GUIDn av nya utföraren för uppgiften
-          example: "8cd549c7-10d1-4a4f-9eee-11fbfd30e358"
-        planerad_till:
-          type: string
-          description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
-          example: "2025-11-07T09:35:41+00:00"
-        utford:
-          type: string
-          description: DateTime av tidpunkten som uppgiften blev färdig i ISO 8601 format
-          example: "2025-11-10T16:11:57+00:00"
-        aktivitet:
-          type: string
-          description: Förklaring av uppgiften i större detalj
-          example: "Bedöma rätten om Lisa Tass har rätt till VAH under datumen ---"
-        fssa:
-          type: string
-          description: FSSÄ-information till kund
-          example: "Handläggning pågår"
-
     PostUppgifterHandlaggareResponse:
       type: object
       properties:
         uppgift:
           $ref: '#/components/schemas/Uppgift'
-
-
-    PatchUppgiftResponse:
-      type: object
-      properties:
-        uppgift:
-          $ref: '#/components/schemas/Uppgift'
-
-    GetUppgiftResponse:
-      type: object
-      properties:
-        uppgift:
-          $ref: '#/components/schemas/Uppgift'
-
-    GetUppgifterResponse:
-      type: object
-      properties:
-        uppgifter:
-          $ref: '#/components/schemas/Uppgifter'
 
     GetUppgifterHandlaggareResponse:
       type: object
@@ -300,26 +67,22 @@ components:
       type: object
       required:
         - uppgift_id
+        - kundbehovsflode_id
         - status
         - skapad
-        - spec
-        - personnummer
       properties:
         uppgift_id:
           type: string
           description: Unikt ID som identifierar instansen av uppgifts-objektet
-        version:
+        kundbehovsflode_id:
           type: string
-          description: Uppgiftens version
-        uppgiftspec_id:
-          type: string
-          description: Unikt ID som identifierar uppgiftens specifikation
+          description: Unikt ID som identifierar kundflödet
         skapad:
           type: string
           description: DateTime av när uppgiften skapades i ISO 8601 format
-        utforar_id:
+        handlaggar_id:
           type: string
-          description: Unikt ID för utföraren
+          description: Unikt ID för den tilldelade handläggaren
         planerad_till:
           type: string
           description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
@@ -329,20 +92,13 @@ components:
         status:
           type: string
           description: Uppgiftens status
-        aktivitet:
+          enum:
+            - Ny
+            - Tilldelad
+            - Avslutad
+        regeltyp:
           type: string
-          description: Arbetsbeskrivning för uppgiften
-        frontend_gui_url:
-          type: string
-          description: URL för grafiska användargränssnittet som frontend behöver för att visa uppgiften korrekt
-        spec:
-          $ref: '#/components/schemas/Uppgiftsspecifikation'
-        personnummer:
-          $ref: '#/components/schemas/Personnummer'
-        underlag:
-          type: array
-          items:
-            $ref: '#/components/schemas/Underlag'
+          description: Vilken typ av regeln uppgiften avser. Används för av frontend för att veta vilken microfrontend som ska laddas.
 
     Uppgifter:
       type: array
@@ -350,6 +106,6 @@ components:
         $ref: '#/components/schemas/Uppgift'
       example:
         - uppgift_id: "abc123"
-          handlaggar_id: "42"
-          beskrivning: "Fråga om personen har anställning"
+          kundbehovsflode_id: "42"
           status: "Tilldelad"
+          skapad: "2025-03-25T00:00:00Z"
