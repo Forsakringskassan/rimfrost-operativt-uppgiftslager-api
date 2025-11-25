@@ -1,3 +1,25 @@
+## 0.1.4 (2025-11-25)
+
+### Bug Fixes
+
+-  format ids as uuid (#13) ([19475](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/194753fc4fb6db3) NilsElveros)  
+-  **deps**  update dependency se.fk.gradle:gradle-conventions to v1.18.1 ([4df9f](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/4df9f1675e1b61a) renovate[bot])  
+
+### Dependency updates
+
+- update gradle to v9.2.1 ([5d964](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/5d9648c7e8accdc) renovate[bot])  
+- update gradle to v9.2.0 ([abc54](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/abc548de5d332d5) renovate[bot])  
+### Other changes
+
+**Removed unused properties and added kundbehovsfoldeId and regeltyp (#12)**
+
+* Removed unused properties and added kundbehovsfoldeId and regeltyp 
+* fix: small fixes to align with the new repo namne 
+* Removed version for now 
+
+[c9c25](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/c9c25ca972af08e) NilsElveros *2025-11-20 12:38:33*
+
+
 ## 0.1.3 (2025-11-11)
 
 ### Bug Fixes
