@@ -18,6 +18,7 @@ paths:
           description: Handläggarens id
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Ny uppgift hämtad OK
@@ -39,6 +40,7 @@ paths:
           description: Handläggarens id
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Uppgifter hämtade OK
@@ -73,15 +75,18 @@ components:
       properties:
         uppgift_id:
           type: string
+          format: uuid
           description: Unikt ID som identifierar instansen av uppgifts-objektet
         kundbehovsflode_id:
           type: string
+          format: uuid
           description: Unikt ID som identifierar kundflödet
         skapad:
           type: string
           description: DateTime av när uppgiften skapades i ISO 8601 format
         handlaggar_id:
           type: string
+          format: uuid
           description: Unikt ID för den tilldelade handläggaren
         planerad_till:
           type: string
@@ -105,7 +110,7 @@ components:
       items:
         $ref: '#/components/schemas/Uppgift'
       example:
-        - uppgift_id: "abc123"
-          kundbehovsflode_id: "42"
+        - uppgift_id: "142bf38e-7cbf-408f-9fe9-6d7aa7636d85"
+          kundbehovsflode_id: "5f3e26ca-c7f7-4711-b2ee-c09b38fa6f1c"
           status: "Tilldelad"
           skapad: "2025-03-25T00:00:00Z"
