@@ -92,10 +92,12 @@ components:
         planerad_till:
           type: string
           format: date
+          nullable: true
           description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
         utford:
           type: string
           format: date
+          nullable: true
           description: DateTime av tidpunkten som uppgiften blev färdig i ISO 8601 format
         status:
           type: string
