@@ -83,6 +83,7 @@ components:
           description: Unikt ID som identifierar kundflödet
         skapad:
           type: string
+          format: date
           description: DateTime av när uppgiften skapades i ISO 8601 format
         handlaggar_id:
           type: string
@@ -90,9 +91,11 @@ components:
           description: Unikt ID för den tilldelade handläggaren
         planerad_till:
           type: string
+          format: date
           description: DateTime av tidpunkten som uppgiften är planerad att vara färdig i ISO 8601 format
         utford:
           type: string
+          format: date
           description: DateTime av tidpunkten som uppgiften blev färdig i ISO 8601 format
         status:
           type: string
