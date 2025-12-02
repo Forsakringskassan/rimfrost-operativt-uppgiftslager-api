@@ -1,3 +1,9 @@
+## 0.1.5 (2025-12-02)
+
+### Bug Fixes
+
+-  format date for all dates (#14) ([d988b](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/d988b431bfceab1) NilsElveros)  
+
 ## 0.1.4 (2025-11-25)
 
 ### Bug Fixes
