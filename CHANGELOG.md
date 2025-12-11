@@ -1,3 +1,10 @@
+## 0.1.6 (2025-12-11)
+
+### Bug Fixes
+
+-  nullable Uppgift ([42aa3](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/42aa34775677f72) Ulf Slunga)  
+-  **deps**  update dependency org.openapitools:jackson-databind-nullable to v0.2.8 ([b116d](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/b116da649f43a60) renovate[bot])  
+
 ## 0.1.5 (2025-12-02)
 
 ### Bug Fixes
