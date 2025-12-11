@@ -58,6 +58,7 @@ components:
       properties:
         uppgift:
           $ref: '#/components/schemas/Uppgift'
+          nullable: true
 
     GetUppgifterHandlaggareResponse:
       type: object
