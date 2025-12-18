@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Operativt uppgiftslager API
   version: 1.0.0
-  description: API för handläggare att hämta ny uppgift och lista sina tilldelade uppgifter.
+  description: API för handläggare att hämta ny uppgift och lista sina tilldelade operativa uppgifter.
 
 paths:
   /uppgifter/handlaggare/{handlaggar_id}:
@@ -31,8 +31,8 @@ paths:
     get:
       tags: [OperativtUppgiftslagerController]
       operationId: getUppgifterHandlaggare
-      summary: Hämta uppgifter som tilldelats handläggare
-      description: Hämta uppgifter som tilldelats handläggare
+      summary: Hämta operativa uppgifter som tilldelats handläggare
+      description: Hämta operativa uppgifter som tilldelats handläggare
       parameters:
         - name: handlaggar_id
           in: path
@@ -56,17 +56,17 @@ components:
     PostUppgifterHandlaggareResponse:
       type: object
       properties:
-        uppgift:
-          $ref: '#/components/schemas/Uppgift'
+        operativ_uppgift:
+          $ref: '#/components/schemas/OperativUppgift'
           nullable: true
 
     GetUppgifterHandlaggareResponse:
       type: object
       properties:
-        uppgifter:
-          $ref: '#/components/schemas/Uppgifter'
+        operativa_uppgifter:
+          $ref: '#/components/schemas/OperativaUppgifter'
 
-    Uppgift:
+    OperativUppgift:
       type: object
       required:
         - uppgift_id
@@ -111,10 +111,10 @@ components:
           type: string
           description: Vilken typ av regeln uppgiften avser. Används för av frontend för att veta vilken microfrontend som ska laddas.
 
-    Uppgifter:
+    OperativaUppgifter:
       type: array
       items:
-        $ref: '#/components/schemas/Uppgift'
+        $ref: '#/components/schemas/OperativUppgift'
       example:
         - uppgift_id: "142bf38e-7cbf-408f-9fe9-6d7aa7636d85"
           kundbehovsflode_id: "5f3e26ca-c7f7-4711-b2ee-c09b38fa6f1c"
