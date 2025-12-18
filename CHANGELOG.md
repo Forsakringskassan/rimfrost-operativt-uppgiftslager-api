@@ -1,3 +1,9 @@
+## 0.1.7 (2025-12-18)
+
+### Bug Fixes
+
+-  Döper om Uppgift till OperativUppgift ([95daa](https://github.com/Forsakringskassan/rimfrost-service-oul-openapi/commit/95daac77fc753b9) Ulf Slunga)  
+
 ## 0.1.6 (2025-12-11)
 
 ### Bug Fixes
